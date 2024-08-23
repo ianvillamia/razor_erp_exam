@@ -1,10 +1,10 @@
 import 'package:fpdart/fpdart.dart';
-import 'package:razor_erp_exam/core/api_exception.dart';
 import 'package:razor_erp_exam/data/data_sources/remote_data_source.dart';
 import 'package:razor_erp_exam/domain/entities/weather_entity.dart';
+import 'package:razor_erp_exam/domain/usecases/base_usecase.dart';
 
 abstract interface class WeatherRepository {
-  Future<Either<ApiException, WeatherEntity>> getWeather({
+  Future<Either<ApiException, WeatherEntity>> getRemoteWeather({
     required num lat,
     required num long,
   });
@@ -16,7 +16,7 @@ class WeatherRepositoryImpl implements WeatherRepository {
   WeatherRepositoryImpl(this.remoteWeatherService);
 
   @override
-  Future<Either<ApiException, WeatherEntity>> getWeather({
+  Future<Either<ApiException, WeatherEntity>> getRemoteWeather({
     required num lat,
     required num long,
   }) {

@@ -1,7 +1,7 @@
 import 'package:fpdart/fpdart.dart';
-import 'package:razor_erp_exam/core/api_exception.dart';
 import 'package:razor_erp_exam/data/api_client.dart';
 import 'package:razor_erp_exam/data/mappers/weather_model.dart';
+import 'package:razor_erp_exam/domain/usecases/base_usecase.dart';
 
 abstract interface class RemoteWeatherService {
   Future<Either<ApiException, WeatherModel>> getWeather({

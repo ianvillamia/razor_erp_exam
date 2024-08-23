@@ -3,6 +3,8 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:razor_erp_exam/core/modules/app_modules.dart';
 import 'package:razor_erp_exam/core/theme/theme.dart';
 import 'package:razor_erp_exam/presentation/current_weather/current_weather_page.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import './bloc_provider.dart';
 
 void main() {
   runApp(
@@ -20,8 +22,11 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: lightTheme,
-      home: const Scaffold(
-        body: CurrentWeatherPage(),
+      home: Scaffold(
+        body: MultiBlocProvider(
+          providers: blocProviders,
+          child: const CurrentWeatherPage(),
+        ),
       ),
     );
   }

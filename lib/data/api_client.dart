@@ -3,8 +3,9 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 
 import 'package:fpdart/fpdart.dart';
-import 'package:razor_erp_exam/core/api_exception.dart';
+
 import 'package:razor_erp_exam/core/extensions/map_extensions.dart';
+import 'package:razor_erp_exam/domain/usecases/base_usecase.dart';
 
 class WeatherApiClient {
   WeatherApiClient(

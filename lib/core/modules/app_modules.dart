@@ -4,6 +4,7 @@ import 'package:razor_erp_exam/core/secrets/app_secrets.dart';
 import 'package:razor_erp_exam/data/api_client.dart';
 import 'package:razor_erp_exam/data/data_sources/remote_data_source.dart';
 import 'package:razor_erp_exam/domain/repositories/weather_repository.dart';
+import 'package:razor_erp_exam/domain/usecases/get_weather_usecase.dart';
 
 class AppModule extends Module {
   @override
@@ -29,5 +30,6 @@ class AppModule extends Module {
       () => RemoteWeatherServiceImpl(i()),
     );
     i.addLazySingleton<WeatherRepository>(() => WeatherRepositoryImpl(i()));
+    i.addSingleton<GetWeatherUseCase>(() => GetWeatherUseCase(i()));
   }
 }
