@@ -1,54 +1,72 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:built_collection/built_collection.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:razor_erp_exam/core/extensions/num_extensions.dart';
 import 'package:razor_erp_exam/data/mappers/weather_model.dart';
+import 'package:razor_erp_exam/presentation/current_weather/bloc/current_weather_bloc.dart';
 import 'package:razor_erp_exam/presentation/current_weather/widgets/weather_icon.dart';
 
 class CurvedContainer extends StatelessWidget {
   const CurvedContainer({
     super.key,
-    required this.weatherData,
   });
-  final BuiltList<WeatherData> weatherData;
 
   @override
   Widget build(BuildContext context) {
-    final firstFour = weatherData.toList().sublist(0, 4);
-    return ClipPath(
-      clipper: CustomTopCurveClipper(),
-      child: Container(
-        height: 200,
-        color: Colors.white,
-        child: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const SizedBox(height: 10),
-              const Text(
-                'Weather Today',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18,
-                ),
+    return BlocBuilder<CurrentWeatherBloc, CurrentWeatherState>(
+      builder: (context, state) {
+        return ClipPath(
+          clipper: CustomTopCurveClipper(),
+          child: Container(
+            height: 200,
+            width: MediaQuery.of(context).size.width,
+            color: Colors.white,
+            child: Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const SizedBox(height: 10),
+                  FadeInUp(
+                    child: const Text(
+                      'Weather Today',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                      ),
+                    ),
+                  ),
+                  _buildRows(state),
+                ],
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: firstFour.map((data) {
-                  return WeatherIcon(
-                    time: data.dt.dtToHHMMa(),
-                    temp: data.main.temp.convertKelvinToCelsius(),
-                    icon: Icons
-                        .wb_sunny, // Replace with actual logic to get the correct icon
-                  );
-                }).toList(),
-              ),
-            ],
+            ),
           ),
-        ),
+        );
+      },
+    );
+  }
+}
+
+Widget _buildRows(CurrentWeatherState state) {
+  if (state is LoadedWeatherState) {
+    final firstFour = state.weatherEntity.list.toList().sublist(0, 4);
+    return FadeIn(
+      duration: const Duration(seconds: 2),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: firstFour.map((data) {
+          return WeatherIcon(
+            time: data.dt.dtToHHMMa(),
+            temp: data.main.temp.convertKelvinToCelsius(),
+            icon: Icons
+                .wb_sunny, // Replace with actual logic to get the correct icon
+          );
+        }).toList(),
       ),
     );
   }
+  return const SizedBox();
 }
 
 class CustomTopCurveClipper extends CustomClipper<Path> {

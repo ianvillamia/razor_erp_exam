@@ -39,36 +39,34 @@ class _CurrentWeatherPageState extends State<CurrentWeatherPage> {
   Widget build(BuildContext context) {
     return BlocBuilder<CurrentWeatherBloc, CurrentWeatherState>(
       builder: (context, state) {
-        if (state is LoadedWeatherState) {
-          return SizedBox(
-            width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height,
-            child: Stack(
-              children: [
-                Container(
-                  width: MediaQuery.of(context).size.width,
-                  height: MediaQuery.of(context).size.height,
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: AssetImage(
-                          Assets.png.sunny.path), // Use AssetImage here
-                      fit: BoxFit.cover,
-                    ),
+        return SizedBox(
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height,
+          child: Stack(
+            children: [
+              Container(
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage(
+                        Assets.png.sunny.path), // Use AssetImage here
+                    fit: BoxFit.cover,
                   ),
                 ),
-                Align(
-                  alignment: Alignment.bottomCenter,
-                  child: CurvedContainer(
-                    weatherData: state.weatherEntity.list,
-                  ),
-                ),
-                Align(
-                  alignment: Alignment.topLeft,
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 10, top: 60),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
+              ),
+              const Align(
+                alignment: Alignment.bottomCenter,
+                child: CurvedContainer(),
+              ),
+              Align(
+                alignment: Alignment.topLeft,
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 10, top: 60),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      if (state is LoadedWeatherState)
                         FadeIn(
                           duration: const Duration(seconds: 2),
                           child: Text(
@@ -79,36 +77,32 @@ class _CurrentWeatherPageState extends State<CurrentWeatherPage> {
                             ),
                           ),
                         ),
-                        FadeIn(
-                          duration: const Duration(seconds: 2),
-                          child: GradientText(
-                            text: 295.69.convertKelvinToCelsius(),
-                            textStyle: const TextStyle(fontSize: 80),
-                          ),
-                        )
-                      ],
+                      FadeIn(
+                        duration: const Duration(seconds: 2),
+                        child: GradientText(
+                          text: 295.69.convertKelvinToCelsius(),
+                          textStyle: const TextStyle(fontSize: 80),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              ),
+              const Align(
+                alignment: Alignment.centerRight,
+                child: RotationTransition(
+                  turns: AlwaysStoppedAnimation(270 / 360),
+                  child: Text(
+                    'Its Sunny',
+                    style: TextStyle(
+                      fontSize: 30,
+                      color: Colors.white,
                     ),
                   ),
                 ),
-                const Align(
-                  alignment: Alignment.centerRight,
-                  child: RotationTransition(
-                    turns: AlwaysStoppedAnimation(270 / 360),
-                    child: Text(
-                      'Its Sunny',
-                      style: TextStyle(
-                        fontSize: 30,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                )
-              ],
-            ),
-          );
-        }
-        return const Center(
-          child: CircularProgressIndicator(),
+              )
+            ],
+          ),
         );
       },
     );
