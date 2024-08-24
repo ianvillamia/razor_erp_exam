@@ -1,6 +1,7 @@
 import 'package:built_collection/built_collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:razor_erp_exam/core/extensions/map_extensions.dart';
 import 'package:razor_erp_exam/data/mappers/weather_model.dart';
 import 'package:razor_erp_exam/gen/assets.gen.dart';
@@ -11,6 +12,17 @@ import 'package:razor_erp_exam/presentation/shared/gradient_text.dart';
 // Helper function to convert Kelvin to Celsius
 String convertKelvinToCelsius(double kelvin) {
   return '${(kelvin - 273.15).toStringAsFixed(1)}°';
+}
+
+String dtToHHMMa(int time) {
+  int timestamp = time;
+
+  // Convert Unix timestamp to DateTime
+  DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(timestamp * 1000);
+
+  // Format DateTime to hh:mm AM/PM
+  String formattedTime = DateFormat('hh:mm a').format(dateTime);
+  return formattedTime;
 }
 
 class CurrentWeatherPage extends StatefulWidget {
@@ -114,7 +126,7 @@ class CurvedContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final firstFour = weatherData.toList().sublist(0, 3);
+    final firstFour = weatherData.toList().sublist(0, 4);
     return ClipPath(
       clipper: CustomTopCurveClipper(),
       child: Container(
@@ -137,8 +149,8 @@ class CurvedContainer extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: firstFour.map((data) {
                   return WeatherIcon(
-                    time: data.dtTxt,
-                    temp: '${data.main.temp.toStringAsFixed(1)}°',
+                    time: dtToHHMMa(data.dt),
+                    temp: convertKelvinToCelsius(data.main.temp),
                     icon: Icons
                         .wb_sunny, // Replace with actual logic to get the correct icon
                   );
