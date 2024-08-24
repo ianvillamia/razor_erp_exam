@@ -1,8 +1,9 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:built_collection/built_collection.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
-import 'package:razor_erp_exam/core/extensions/map_extensions.dart';
 import 'package:razor_erp_exam/data/mappers/weather_model.dart';
 import 'package:razor_erp_exam/gen/assets.gen.dart';
 import 'package:razor_erp_exam/presentation/current_weather/bloc/current_weather_bloc.dart';
@@ -34,11 +35,26 @@ class CurrentWeatherPage extends StatefulWidget {
 
 class _CurrentWeatherPageState extends State<CurrentWeatherPage> {
   late CurrentWeatherBloc bloc;
+  late bool _isConnected;
   @override
   void initState() {
     super.initState();
     bloc = BlocProvider.of<CurrentWeatherBloc>(context);
-    bloc.add(const GetWeatherDataEvent());
+    _checkConnectivity();
+  }
+
+  Future<void> _checkConnectivity() async {
+    var connectivityResult = await (Connectivity().checkConnectivity());
+    setState(() {
+      _isConnected = !connectivityResult.contains(ConnectivityResult.none);
+    });
+    if (_isConnected) {
+      bloc.add(const GetWeatherDataEvent());
+    } else {
+      // No need to add an event, as the persisted state should be loaded automatically
+      // Ensure the UI uses the current bloc state
+      setState(() {});
+    }
   }
 
   @override
@@ -77,17 +93,23 @@ class _CurrentWeatherPageState extends State<CurrentWeatherPage> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          state.weatherEntity.city.name,
-                          style: const TextStyle(
-                            fontSize: 30,
-                            color: Colors.white,
+                        FadeIn(
+                          duration: const Duration(seconds: 2),
+                          child: Text(
+                            state.weatherEntity.city.name,
+                            style: const TextStyle(
+                              fontSize: 30,
+                              color: Colors.white,
+                            ),
                           ),
                         ),
-                        GradientText(
-                          text: convertKelvinToCelsius(295.69),
-                          textStyle: const TextStyle(fontSize: 80),
-                        ),
+                        FadeIn(
+                          duration: const Duration(seconds: 2),
+                          child: GradientText(
+                            text: convertKelvinToCelsius(295.69),
+                            textStyle: const TextStyle(fontSize: 80),
+                          ),
+                        )
                       ],
                     ),
                   ),

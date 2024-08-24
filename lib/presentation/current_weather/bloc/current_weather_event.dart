@@ -10,3 +10,10 @@ class GetWeatherDataEvent extends CurrentWeatherEvent {
   @override
   List<Object?> get props => [];
 }
+
+class GetWeatherDataEventOffline extends CurrentWeatherEvent {
+  const GetWeatherDataEventOffline();
+
+  @override
+  List<Object?> get props => [];
+}

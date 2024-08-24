@@ -1,10 +1,12 @@
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 import 'package:built_collection/built_collection.dart';
+import 'package:razor_erp_exam/data/mappers/serializers.dart';
 
 part 'weather_model.g.dart';
 
-abstract class WeatherModel implements Built<WeatherModel, WeatherModelBuilder> {
+abstract class WeatherModel
+    implements Built<WeatherModel, WeatherModelBuilder> {
   String get cod;
   int get message;
   int get cnt;
@@ -12,9 +14,18 @@ abstract class WeatherModel implements Built<WeatherModel, WeatherModelBuilder> 
   City get city;
 
   WeatherModel._();
-  factory WeatherModel([void Function(WeatherModelBuilder) updates]) = _$WeatherModel;
+  factory WeatherModel([void Function(WeatherModelBuilder) updates]) =
+      _$WeatherModel;
 
   static Serializer<WeatherModel> get serializer => _$weatherModelSerializer;
+  Map<String, dynamic>? toJson() {
+    return serializers.serializeWith(WeatherModel.serializer, this)
+        as Map<String, dynamic>;
+  }
+
+  static WeatherModel? fromJson(Map<String, dynamic> json) {
+    return serializers.deserializeWith(WeatherModel.serializer, json);
+  }
 }
 
 abstract class WeatherData implements Built<WeatherData, WeatherDataBuilder> {
@@ -26,60 +37,64 @@ abstract class WeatherData implements Built<WeatherData, WeatherDataBuilder> {
   int get visibility;
   double get pop;
   Sys get sys;
-  
+
   @BuiltValueField(wireName: 'dt_txt')
   String get dtTxt;
-
 
   Rain? get rain;
 
   WeatherData._();
-  factory WeatherData([void Function(WeatherDataBuilder) updates]) = _$WeatherData;
+  factory WeatherData([void Function(WeatherDataBuilder) updates]) =
+      _$WeatherData;
 
   static Serializer<WeatherData> get serializer => _$weatherDataSerializer;
 }
 
 abstract class MainWeather implements Built<MainWeather, MainWeatherBuilder> {
   double get temp;
-  
+
   @BuiltValueField(wireName: 'feels_like')
   double get feelsLike;
-  
+
   @BuiltValueField(wireName: 'temp_min')
   double get tempMin;
-  
+
   @BuiltValueField(wireName: 'temp_max')
   double get tempMax;
-  
+
   int get pressure;
-  
+
   @BuiltValueField(wireName: 'sea_level')
   int get seaLevel;
-  
+
   @BuiltValueField(wireName: 'grnd_level')
   int get grndLevel;
-  
+
   int get humidity;
-  
+
   @BuiltValueField(wireName: 'temp_kf')
   double get tempKf;
 
   MainWeather._();
-  factory MainWeather([void Function(MainWeatherBuilder) updates]) = _$MainWeather;
+  factory MainWeather([void Function(MainWeatherBuilder) updates]) =
+      _$MainWeather;
 
   static Serializer<MainWeather> get serializer => _$mainWeatherSerializer;
 }
 
-abstract class WeatherCondition implements Built<WeatherCondition, WeatherConditionBuilder> {
+abstract class WeatherCondition
+    implements Built<WeatherCondition, WeatherConditionBuilder> {
   int get id;
   String get main;
   String get description;
   String get icon;
 
   WeatherCondition._();
-  factory WeatherCondition([void Function(WeatherConditionBuilder) updates]) = _$WeatherCondition;
+  factory WeatherCondition([void Function(WeatherConditionBuilder) updates]) =
+      _$WeatherCondition;
 
-  static Serializer<WeatherCondition> get serializer => _$weatherConditionSerializer;
+  static Serializer<WeatherCondition> get serializer =>
+      _$weatherConditionSerializer;
 }
 
 abstract class Clouds implements Built<Clouds, CloudsBuilder> {
