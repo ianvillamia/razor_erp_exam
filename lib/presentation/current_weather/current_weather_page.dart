@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:razor_erp_exam/gen/assets.gen.dart';
+import 'package:razor_erp_exam/presentation/current_weather/bloc/current_weather_bloc.dart';
 import 'package:razor_erp_exam/presentation/current_weather/widgets/weather_icon.dart';
 import 'package:razor_erp_exam/presentation/shared/gradient_text.dart';
 
@@ -8,68 +10,89 @@ String convertKelvinToCelsius(double kelvin) {
   return '${(kelvin - 273.15).toStringAsFixed(1)}°';
 }
 
-class CurrentWeatherPage extends StatelessWidget {
+class CurrentWeatherPage extends StatefulWidget {
   const CurrentWeatherPage({super.key});
 
   @override
+  State<CurrentWeatherPage> createState() => _CurrentWeatherPageState();
+}
+
+class _CurrentWeatherPageState extends State<CurrentWeatherPage> {
+  late CurrentWeatherBloc bloc;
+  @override
+  void initState() {
+    super.initState();
+    bloc = BlocProvider.of<CurrentWeatherBloc>(context);
+    bloc.add(const GetWeatherDataEvent(lat: 33.44, long: -94.04));
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: MediaQuery.of(context).size.width,
-      height: MediaQuery.of(context).size.height,
-      child: Stack(
-        children: [
-          Container(
-            width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height,
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage(Assets.png.sunny.path), // Use AssetImage here
-                fit: BoxFit
-                    .cover, // Optional: fit the image within the container
+    return BlocConsumer<CurrentWeatherBloc, CurrentWeatherState>(
+      listener: (context, state) {
+        // TODO: implement listener
+      },
+      builder: (context, state) {
+        return SizedBox(
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height,
+          child: Stack(
+            children: [
+              Container(
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage(
+                        Assets.png.sunny.path), // Use AssetImage here
+                    fit: BoxFit
+                        .cover, // Optional: fit the image within the container
+                  ),
+                ),
               ),
-            ),
-          ),
-          const Align(
-            alignment: Alignment.bottomCenter,
-            child: CurvedContainer(),
-          ),
-          Align(
-            alignment: Alignment.topLeft,
-            child: Padding(
-              padding: const EdgeInsets.only(left: 10, top: 60),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text(
-                    '📍Tuscany',
+              const Align(
+                alignment: Alignment.bottomCenter,
+                child: CurvedContainer(),
+              ),
+              Align(
+                alignment: Alignment.topLeft,
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 10, top: 60),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        '📍Tuscany',
+                        style: TextStyle(
+                          fontSize: 30,
+                          color: Colors.white,
+                        ),
+                      ),
+                      GradientText(
+                        text: convertKelvinToCelsius(295.69),
+                        textStyle: const TextStyle(fontSize: 80),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              const Align(
+                alignment: Alignment.centerRight,
+                child: RotationTransition(
+                  turns: AlwaysStoppedAnimation(270 / 360),
+                  child: Text(
+                    'Its Sunny',
                     style: TextStyle(
                       fontSize: 30,
                       color: Colors.white,
                     ),
                   ),
-                  GradientText(
-                    text: convertKelvinToCelsius(295.69),
-                    textStyle: const TextStyle(fontSize: 80),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          const Align(
-            alignment: Alignment.centerRight,
-            child: RotationTransition(
-              turns: AlwaysStoppedAnimation(270 / 360),
-              child: Text(
-                'Its Sunny',
-                style: TextStyle(
-                  fontSize: 30,
-                  color: Colors.white,
                 ),
-              ),
-            ),
-          )
-        ],
-      ),
+              )
+            ],
+          ),
+        );
+      },
     );
   }
 }

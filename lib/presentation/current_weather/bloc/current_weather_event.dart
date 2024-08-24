@@ -1,6 +1,17 @@
 part of 'current_weather_bloc.dart';
 
-@freezed
-class CurrentWeatherEvent with _$CurrentWeatherEvent {
-  const factory CurrentWeatherEvent.started() = _Started;
+abstract class CurrentWeatherEvent extends Equatable {
+  const CurrentWeatherEvent();
+}
+
+class GetWeatherDataEvent extends CurrentWeatherEvent {
+  const GetWeatherDataEvent({
+    required this.lat,
+    required this.long,
+  });
+  final num lat;
+  final num long;
+
+  @override
+  List<Object?> get props => [lat, long];
 }

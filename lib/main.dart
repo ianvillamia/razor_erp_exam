@@ -7,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import './bloc_provider.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(
     ModularApp(
       module: AppModule(),
@@ -20,12 +21,12 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: lightTheme,
-      home: Scaffold(
-        body: MultiBlocProvider(
-          providers: blocProviders,
-          child: const CurrentWeatherPage(),
+    return MultiBlocProvider(
+      providers: BlocProviders.getBlocProviders(),
+      child: MaterialApp(
+        theme: lightTheme,
+        home: const Scaffold(
+          body: CurrentWeatherPage(),
         ),
       ),
     );
