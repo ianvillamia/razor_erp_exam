@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_modular/flutter_modular.dart';
 import 'package:razor_erp_exam/core/modules/app_modules.dart';
 import 'package:razor_erp_exam/core/theme/theme.dart';
 import 'package:razor_erp_exam/presentation/current_weather/current_weather_page.dart';
@@ -8,11 +7,9 @@ import './bloc_provider.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
+  setupDependencies();
   runApp(
-    ModularApp(
-      module: AppModule(),
-      child: const MyApp(),
-    ),
+    const MyApp(),
   );
 }
 
