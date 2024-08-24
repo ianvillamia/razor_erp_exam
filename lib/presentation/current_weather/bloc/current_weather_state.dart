@@ -6,7 +6,7 @@ abstract class CurrentWeatherState extends Equatable {
 
 class LoadedWeatherState extends CurrentWeatherState {
   const LoadedWeatherState(this.weatherEntity);
-  final WeatherEntity weatherEntity;
+  final WeatherModel weatherEntity;
 
   @override
   List<Object?> get props => [weatherEntity];

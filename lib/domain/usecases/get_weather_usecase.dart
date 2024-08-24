@@ -1,16 +1,16 @@
 import 'package:fpdart/fpdart.dart';
+import 'package:razor_erp_exam/data/mappers/weather_model.dart';
 
-import 'package:razor_erp_exam/domain/entities/weather_entity.dart';
 import 'package:razor_erp_exam/domain/repositories/weather_repository.dart';
 import 'package:razor_erp_exam/domain/usecases/base_usecase.dart';
 
-class GetWeatherUseCase extends BaseUseCase<WeatherEntity, GetWeatherParams> {
+class GetWeatherUseCase extends BaseUseCase<WeatherModel, GetWeatherParams> {
   GetWeatherUseCase(this.weatherRepository);
 
   final WeatherRepository weatherRepository;
 
   @override
-  Future<Either<ApiException, WeatherEntity>> call(
+  Future<Either<ApiException, WeatherModel>> call(
     GetWeatherParams params,
   ) async {
     final getWeather = await weatherRepository.getRemoteWeather(

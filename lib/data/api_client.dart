@@ -1,10 +1,11 @@
 import 'dart:convert';
 
+import 'package:built_value/serializer.dart';
 import 'package:dio/dio.dart';
 
 import 'package:fpdart/fpdart.dart';
-
 import 'package:razor_erp_exam/core/extensions/map_extensions.dart';
+import 'package:razor_erp_exam/data/mappers/serializers.dart';
 import 'package:razor_erp_exam/domain/usecases/base_usecase.dart';
 
 class WeatherApiClient {
@@ -18,7 +19,7 @@ class WeatherApiClient {
   /// [isPublicAuth] when using Public token
   Future<Either<ApiException, T>> get<T>(
     String path,
-    T Function(Map<String, dynamic>) mapper, {
+    Serializer<T> serializer, {
     String? baseUrl,
     bool isPublicAuth = false,
     bool isIbmApicAuth = false,
@@ -34,7 +35,7 @@ class WeatherApiClient {
   }) async {
     return _dio.safeGet(
       path,
-      mapper,
+      serializer,
       data: data,
       queryParameters: queryParameters,
       options: options,
@@ -48,7 +49,7 @@ class WeatherApiClient {
 extension DioExtensions on Dio {
   Future<Either<ApiException, T>> safeGet<T>(
     String path,
-    T Function(Map<String, dynamic>) mapper, {
+    Serializer<T> serializer, {
     dynamic data,
     Map<String, dynamic>? queryParameters,
     Options? options,
@@ -67,7 +68,7 @@ extension DioExtensions on Dio {
         onReceiveProgress: onReceiveProgress,
       );
 
-      return right(Result.fromResponse(response, mapper).data);
+      return right(Result.fromResponse(response, serializer).data);
     } on DioException catch (exception) {
       return left(ApiException(
         code: exception.response?.statusCode.toString() ?? '',
@@ -90,36 +91,20 @@ class Result<T> {
 
   static Result<T> fromResponse<T>(
     Response<dynamic> response,
-    T Function(Map<String, dynamic>) mapper,
+    Serializer<T> serializer,
   ) {
     final responseData = response.data;
 
     if (responseData == null || responseData.toString().isEmpty) {
-      return Result(mapper({}));
+      return Result(
+          serializers.deserializeWith(serializer, <String, dynamic>{}) as T);
     }
 
     if (responseData[_jsonNodeErrors] != null) {
       return ServerError.fromResponse(response);
     }
 
-    return Result(mapper(responseData));
-  }
-
-  static Result<T> fromPlatformResponse<T>(
-    dynamic response,
-    T Function(Map<String, dynamic>) mapper,
-  ) {
-    final responseData = response.toString().isNotEmpty
-        ? Map<String, dynamic>.from(
-            jsonDecode(response) as Map<String, dynamic>,
-          )
-        : <String, dynamic>{};
-
-    if (responseData[_jsonNodeErrors] != null) {
-      return ServerError.fromPlatformException(response);
-    }
-
-    return Result(mapper(responseData));
+    return Result(serializers.deserializeWith(serializer, responseData) as T);
   }
 }
 

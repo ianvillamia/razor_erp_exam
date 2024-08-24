@@ -27,9 +27,10 @@ class RemoteWeatherServiceImpl implements RemoteWeatherService {
     required num lat,
     required num long,
   }) async {
+    
     return client.get(
       '/data/3.0/onecall?lat=$lat&lon=$long',
-      WeatherModelMapper.fromMap,
+      WeatherModel.serializer,
     );
   }
 
