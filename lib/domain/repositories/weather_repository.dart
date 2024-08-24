@@ -7,7 +7,7 @@ import 'package:razor_erp_exam/domain/usecases/base_usecase.dart';
 abstract interface class WeatherRepository {
   Future<Either<ApiException, WeatherModel>> getRemoteWeather({
     required num lat,
-    required num long,
+    required num lon,
   });
   Future<Either<ApiException, Position>> getLatLong();
 }
@@ -20,9 +20,9 @@ class WeatherRepositoryImpl implements WeatherRepository {
   @override
   Future<Either<ApiException, WeatherModel>> getRemoteWeather({
     required num lat,
-    required num long,
+    required num lon,
   }) {
-    return remoteWeatherService.getWeather(lat: lat, long: long);
+    return remoteWeatherService.getWeather(lat: lat, lon: lon);
   }
 
   @override

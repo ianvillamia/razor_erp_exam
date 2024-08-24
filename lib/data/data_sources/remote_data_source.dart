@@ -7,7 +7,7 @@ import 'package:geolocator/geolocator.dart';
 abstract interface class RemoteWeatherService {
   Future<Either<ApiException, WeatherModel>> getWeather({
     required num lat,
-    required num long,
+    required num lon,
   });
 
   /// Determine the current position of the device.
@@ -25,11 +25,11 @@ class RemoteWeatherServiceImpl implements RemoteWeatherService {
   @override
   Future<Either<ApiException, WeatherModel>> getWeather({
     required num lat,
-    required num long,
+    required num lon,
   }) async {
     
     return client.get(
-      '/data/3.0/onecall?lat=$lat&lon=$long',
+      'data/2.5/forecast?lat=$lat&lon=$lon',
       WeatherModel.serializer,
     );
   }

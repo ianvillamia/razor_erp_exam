@@ -15,7 +15,7 @@ class GetWeatherUseCase extends BaseUseCase<WeatherModel, GetWeatherParams> {
   ) async {
     final getWeather = await weatherRepository.getRemoteWeather(
       lat: params.lat,
-      long: params.long,
+      lon: params.lon,
     );
     return getWeather.fold(left, (data) {
       return Right(data);
@@ -26,9 +26,9 @@ class GetWeatherUseCase extends BaseUseCase<WeatherModel, GetWeatherParams> {
 class GetWeatherParams {
   const GetWeatherParams({
     required this.lat,
-    required this.long,
+    required this.lon,
   });
 
   final num lat;
-  final num long;
+  final num lon;
 }

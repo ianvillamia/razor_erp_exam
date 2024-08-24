@@ -37,7 +37,7 @@ class CurrentWeatherBloc extends Bloc<CurrentWeatherEvent, CurrentWeatherState> 
         final response = await getWeatherUseCase(
           GetWeatherParams(
             lat: coordinates.latitude,
-            long: coordinates.longitude,
+            lon: coordinates.longitude,
           ),
         );
 
