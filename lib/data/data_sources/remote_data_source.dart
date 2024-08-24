@@ -27,9 +27,8 @@ class RemoteWeatherServiceImpl implements RemoteWeatherService {
     required num lat,
     required num lon,
   }) async {
-    
     return client.get(
-      'data/2.5/forecast?lat=$lat&lon=$lon',
+      '/data/2.5/forecast?lat=$lat&lon=$lon',
       WeatherModel.serializer,
     );
   }

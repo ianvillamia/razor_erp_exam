@@ -1,5 +1,8 @@
+import 'package:built_collection/built_collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:razor_erp_exam/core/extensions/map_extensions.dart';
+import 'package:razor_erp_exam/data/mappers/weather_model.dart';
 import 'package:razor_erp_exam/gen/assets.gen.dart';
 import 'package:razor_erp_exam/presentation/current_weather/bloc/current_weather_bloc.dart';
 import 'package:razor_erp_exam/presentation/current_weather/widgets/weather_icon.dart';
@@ -31,64 +34,71 @@ class _CurrentWeatherPageState extends State<CurrentWeatherPage> {
     return BlocConsumer<CurrentWeatherBloc, CurrentWeatherState>(
       listener: (context, state) {},
       builder: (context, state) {
-        return SizedBox(
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height,
-          child: Stack(
-            children: [
-              Container(
-                width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height,
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage(
-                        Assets.png.sunny.path), // Use AssetImage here
-                    fit: BoxFit
-                        .cover, // Optional: fit the image within the container
-                  ),
-                ),
-              ),
-              const Align(
-                alignment: Alignment.bottomCenter,
-                child: CurvedContainer(),
-              ),
-              Align(
-                alignment: Alignment.topLeft,
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 10, top: 60),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        '📍Tuscany',
-                        style: TextStyle(
-                          fontSize: 30,
-                          color: Colors.white,
-                        ),
-                      ),
-                      GradientText(
-                        text: convertKelvinToCelsius(295.69),
-                        textStyle: const TextStyle(fontSize: 80),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              const Align(
-                alignment: Alignment.centerRight,
-                child: RotationTransition(
-                  turns: AlwaysStoppedAnimation(270 / 360),
-                  child: Text(
-                    'Its Sunny',
-                    style: TextStyle(
-                      fontSize: 30,
-                      color: Colors.white,
+        if (state is LoadedWeatherState) {
+          return SizedBox(
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height,
+            child: Stack(
+              children: [
+                Container(
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height,
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: AssetImage(
+                          Assets.png.sunny.path), // Use AssetImage here
+                      fit: BoxFit
+                          .cover, // Optional: fit the image within the container
                     ),
                   ),
                 ),
-              )
-            ],
-          ),
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child: CurvedContainer(
+                    weatherData: state.weatherEntity.list,
+                  ),
+                ),
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 10, top: 60),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          state.weatherEntity.city.name,
+                          style: const TextStyle(
+                            fontSize: 30,
+                            color: Colors.white,
+                          ),
+                        ),
+                        GradientText(
+                          text: convertKelvinToCelsius(295.69),
+                          textStyle: const TextStyle(fontSize: 80),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                const Align(
+                  alignment: Alignment.centerRight,
+                  child: RotationTransition(
+                    turns: AlwaysStoppedAnimation(270 / 360),
+                    child: Text(
+                      'Its Sunny',
+                      style: TextStyle(
+                        fontSize: 30,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                )
+              ],
+            ),
+          );
+        }
+        return const Center(
+          child: CircularProgressIndicator(),
         );
       },
     );
@@ -96,22 +106,27 @@ class _CurrentWeatherPageState extends State<CurrentWeatherPage> {
 }
 
 class CurvedContainer extends StatelessWidget {
-  const CurvedContainer({super.key});
+  const CurvedContainer({
+    super.key,
+    required this.weatherData,
+  });
+  final BuiltList<WeatherData> weatherData;
 
   @override
   Widget build(BuildContext context) {
+    final firstFour = weatherData.toList().sublist(0, 3);
     return ClipPath(
       clipper: CustomTopCurveClipper(),
       child: Container(
         height: 200,
         color: Colors.white,
-        child: const Padding(
-          padding: EdgeInsets.all(20.0),
+        child: Padding(
+          padding: const EdgeInsets.all(20.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              SizedBox(height: 10),
-              Text(
+              const SizedBox(height: 10),
+              const Text(
                 'Weather Today',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
@@ -120,28 +135,14 @@ class CurvedContainer extends StatelessWidget {
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: <Widget>[
-                  WeatherIcon(
-                    time: '05:00 AM',
-                    temp: '23°',
-                    icon: Icons.wb_sunny,
-                  ),
-                  WeatherIcon(
-                    time: '06:00 AM',
-                    temp: '16°',
-                    icon: Icons.cloud,
-                  ),
-                  WeatherIcon(
-                    time: '07:00 AM',
-                    temp: '3°',
-                    icon: Icons.grain,
-                  ),
-                  WeatherIcon(
-                    time: '08:00 AM',
-                    temp: '23°',
-                    icon: Icons.wb_sunny,
-                  ),
-                ],
+                children: firstFour.map((data) {
+                  return WeatherIcon(
+                    time: data.dtTxt,
+                    temp: '${data.main.temp.toStringAsFixed(1)}°',
+                    icon: Icons
+                        .wb_sunny, // Replace with actual logic to get the correct icon
+                  );
+                }).toList(),
               ),
             ],
           ),
