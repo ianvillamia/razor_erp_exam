@@ -23,15 +23,13 @@ class _CurrentWeatherPageState extends State<CurrentWeatherPage> {
   void initState() {
     super.initState();
     bloc = BlocProvider.of<CurrentWeatherBloc>(context);
-    bloc.add(const GetWeatherDataEvent(lat: 33.44, long: -94.04));
+    bloc.add(const GetWeatherDataEvent());
   }
 
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<CurrentWeatherBloc, CurrentWeatherState>(
-      listener: (context, state) {
-        // TODO: implement listener
-      },
+      listener: (context, state) {},
       builder: (context, state) {
         return SizedBox(
           width: MediaQuery.of(context).size.width,

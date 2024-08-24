@@ -20,9 +20,9 @@ class WeatherModel extends WeatherEntity with WeatherModelMappable {
         );
 
   @override
-  final CurrentWeatherEntity current;
+  final CurrentWeatherModel current;
   @override
-  final List<HourlyWeatherEntity> hourly;
+  final List<HourlyWeatherModel> hourly;
 }
 
 @MappableClass()

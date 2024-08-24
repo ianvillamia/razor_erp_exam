@@ -5,13 +5,8 @@ abstract class CurrentWeatherEvent extends Equatable {
 }
 
 class GetWeatherDataEvent extends CurrentWeatherEvent {
-  const GetWeatherDataEvent({
-    required this.lat,
-    required this.long,
-  });
-  final num lat;
-  final num long;
+  const GetWeatherDataEvent();
 
   @override
-  List<Object?> get props => [lat, long];
+  List<Object?> get props => [];
 }

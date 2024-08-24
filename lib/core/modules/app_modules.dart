@@ -6,6 +6,7 @@ import 'package:razor_erp_exam/core/secrets/app_secrets.dart';
 import 'package:razor_erp_exam/data/api_client.dart';
 import 'package:razor_erp_exam/data/data_sources/remote_data_source.dart';
 import 'package:razor_erp_exam/domain/repositories/weather_repository.dart';
+import 'package:razor_erp_exam/domain/usecases/get_lat_long_usecase.dart';
 import 'package:razor_erp_exam/domain/usecases/get_weather_usecase.dart';
 
 final getIt = GetIt.instance;
@@ -54,4 +55,6 @@ void setupDependencies() {
 
   getIt.registerLazySingleton<GetWeatherUseCase>(
       () => GetWeatherUseCase(getIt<WeatherRepository>()));
+  getIt.registerLazySingleton<GetLatLongUseCase>(
+      () => GetLatLongUseCase(getIt<WeatherRepository>()));
 }
