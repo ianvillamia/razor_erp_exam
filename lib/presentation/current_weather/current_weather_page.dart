@@ -3,28 +3,12 @@ import 'package:built_collection/built_collection.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
+import 'package:razor_erp_exam/core/extensions/num_extensions.dart';
 import 'package:razor_erp_exam/data/mappers/weather_model.dart';
 import 'package:razor_erp_exam/gen/assets.gen.dart';
 import 'package:razor_erp_exam/presentation/current_weather/bloc/current_weather_bloc.dart';
 import 'package:razor_erp_exam/presentation/current_weather/widgets/weather_icon.dart';
 import 'package:razor_erp_exam/presentation/shared/gradient_text.dart';
-
-// Helper function to convert Kelvin to Celsius
-String convertKelvinToCelsius(double kelvin) {
-  return '${(kelvin - 273.15).toStringAsFixed(1)}°';
-}
-
-String dtToHHMMa(int time) {
-  int timestamp = time;
-
-  // Convert Unix timestamp to DateTime
-  DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(timestamp * 1000);
-
-  // Format DateTime to hh:mm AM/PM
-  String formattedTime = DateFormat('hh:mm a').format(dateTime);
-  return formattedTime;
-}
 
 class CurrentWeatherPage extends StatefulWidget {
   const CurrentWeatherPage({super.key});
@@ -51,16 +35,13 @@ class _CurrentWeatherPageState extends State<CurrentWeatherPage> {
     if (_isConnected) {
       bloc.add(const GetWeatherDataEvent());
     } else {
-      // No need to add an event, as the persisted state should be loaded automatically
-      // Ensure the UI uses the current bloc state
       setState(() {});
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<CurrentWeatherBloc, CurrentWeatherState>(
-      listener: (context, state) {},
+    return BlocBuilder<CurrentWeatherBloc, CurrentWeatherState>(
       builder: (context, state) {
         if (state is LoadedWeatherState) {
           return SizedBox(
@@ -75,8 +56,7 @@ class _CurrentWeatherPageState extends State<CurrentWeatherPage> {
                     image: DecorationImage(
                       image: AssetImage(
                           Assets.png.sunny.path), // Use AssetImage here
-                      fit: BoxFit
-                          .cover, // Optional: fit the image within the container
+                      fit: BoxFit.cover,
                     ),
                   ),
                 ),
@@ -106,7 +86,7 @@ class _CurrentWeatherPageState extends State<CurrentWeatherPage> {
                         FadeIn(
                           duration: const Duration(seconds: 2),
                           child: GradientText(
-                            text: convertKelvinToCelsius(295.69),
+                            text: 295.69.convertKelvinToCelsius(),
                             textStyle: const TextStyle(fontSize: 80),
                           ),
                         )
@@ -171,8 +151,8 @@ class CurvedContainer extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: firstFour.map((data) {
                   return WeatherIcon(
-                    time: dtToHHMMa(data.dt),
-                    temp: convertKelvinToCelsius(data.main.temp),
+                    time: data.dt.dtToHHMMa(),
+                    temp: data.main.temp.convertKelvinToCelsius(),
                     icon: Icons
                         .wb_sunny, // Replace with actual logic to get the correct icon
                   );
