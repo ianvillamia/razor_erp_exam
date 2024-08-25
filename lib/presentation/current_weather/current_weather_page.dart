@@ -3,6 +3,7 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:razor_erp_exam/core/extensions/num_extensions.dart';
+import 'package:razor_erp_exam/core/keys/keys.dart';
 import 'package:razor_erp_exam/gen/assets.gen.dart';
 import 'package:razor_erp_exam/presentation/current_weather/bloc/current_weather_bloc.dart';
 import 'package:razor_erp_exam/presentation/current_weather/widgets/curved_container.dart';
@@ -57,7 +58,7 @@ class _CurrentWeatherPageState extends State<CurrentWeatherPage> {
               ),
               const Align(
                 alignment: Alignment.bottomCenter,
-                child: CurvedContainer(),
+                child: CurvedContainer(key: Keys.curvedContainer),
               ),
               Align(
                 alignment: Alignment.topLeft,
@@ -70,6 +71,7 @@ class _CurrentWeatherPageState extends State<CurrentWeatherPage> {
                         FadeIn(
                           duration: const Duration(seconds: 2),
                           child: Text(
+                            key: Keys.cityText,
                             state.weatherEntity.city.name,
                             style: const TextStyle(
                               fontSize: 30,
@@ -80,6 +82,7 @@ class _CurrentWeatherPageState extends State<CurrentWeatherPage> {
                       FadeIn(
                         duration: const Duration(seconds: 2),
                         child: GradientText(
+                          key: Keys.gradientText,
                           text: 295.69.convertKelvinToCelsius(),
                           textStyle: const TextStyle(fontSize: 80),
                         ),
@@ -93,6 +96,7 @@ class _CurrentWeatherPageState extends State<CurrentWeatherPage> {
                 child: RotationTransition(
                   turns: AlwaysStoppedAnimation(270 / 360),
                   child: Text(
+                    key: Keys.sunnyText,
                     'Its Sunny',
                     style: TextStyle(
                       fontSize: 30,

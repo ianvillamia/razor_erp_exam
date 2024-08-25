@@ -44,42 +44,42 @@ void main() async {
       mockGetWeatherUseCase,
       mockGetLatLongUseCase,
     );
+    final weatherList = List.generate(5, (i) {
+      return WeatherData((b) => b
+        ..dt = 1620000000
+        ..main.replace(MainWeather((b) => b
+          ..temp = 299.15
+          ..feelsLike = 298.56
+          ..tempMin = 298.15
+          ..tempMax = 300.15
+          ..pressure = 1013
+          ..seaLevel = 1013
+          ..grndLevel = 1009
+          ..humidity = 85
+          ..tempKf = 1.0))
+        ..weather.addAll([
+          WeatherCondition((b) => b
+            ..id = 800
+            ..main = 'Clear'
+            ..description = 'clear sky'
+            ..icon = '01d'),
+        ])
+        ..clouds.replace(Clouds((b) => b..all = 1))
+        ..wind.replace(Wind((b) => b
+          ..speed = 4.12
+          ..deg = 240
+          ..gust = 7.24))
+        ..visibility = 10000
+        ..pop = 0.1
+        ..sys.replace(Sys((b) => b..pod = 'd'))
+        ..dtTxt = '2021-05-03 12:00:00'
+        ..rain.replace(Rain((b) => b..threeH = 0.0)));
+    });
     weatherModel = WeatherModel((b) => b
       ..cod = '200'
       ..message = 0
       ..cnt = 40
-      ..list.addAll([
-        WeatherData((b) => b
-          ..dt = 1620000000
-          ..main.replace(MainWeather((b) => b
-            ..temp = 299.15
-            ..feelsLike = 298.56
-            ..tempMin = 298.15
-            ..tempMax = 300.15
-            ..pressure = 1013
-            ..seaLevel = 1013
-            ..grndLevel = 1009
-            ..humidity = 85
-            ..tempKf = 1.0))
-          ..weather.addAll([
-            WeatherCondition((b) => b
-              ..id = 800
-              ..main = 'Clear'
-              ..description = 'clear sky'
-              ..icon = '01d'),
-          ])
-          ..clouds.replace(Clouds((b) => b..all = 1))
-          ..wind.replace(Wind((b) => b
-            ..speed = 4.12
-            ..deg = 240
-            ..gust = 7.24))
-          ..visibility = 10000
-          ..pop = 0.1
-          ..sys.replace(Sys((b) => b..pod = 'd'))
-          ..dtTxt = '2021-05-03 12:00:00'
-          ..rain.replace(Rain((b) => b..threeH = 0.0))),
-        // Add more WeatherData objects if needed
-      ])
+      ..list.addAll(weatherList)
       ..city.replace(City((b) => b
         ..id = 2643743
         ..name = 'London'
