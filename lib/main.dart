@@ -13,7 +13,6 @@ void main() async {
   // Initialize HydratedStorage
   final storage = await HydratedStorage.build(
     storageDirectory: await getApplicationDocumentsDirectory(), // For mobile
-    // For web, use HydratedStorage.webStorageDirectory
   );
 
   // Assign the storage to HydratedBloc

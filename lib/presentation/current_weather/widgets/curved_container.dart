@@ -2,6 +2,7 @@ import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:razor_erp_exam/core/extensions/num_extensions.dart';
+import 'package:razor_erp_exam/data/mappers/weather_model.dart';
 import 'package:razor_erp_exam/presentation/current_weather/bloc/current_weather_bloc.dart';
 import 'package:razor_erp_exam/presentation/current_weather/widgets/weather_icon.dart';
 
@@ -57,14 +58,22 @@ Widget _buildRows(CurrentWeatherState state) {
           return WeatherIcon(
             time: data.dt.dtToHHMMa(),
             temp: data.main.temp.convertKelvinToCelsius(),
-            icon: Icons
-                .wb_sunny, // Replace with actual logic to get the correct icon
+            icon: buildIcon(
+                data), // Replace with actual logic to get the correct icon
           );
         }).toList(),
       ),
     );
   }
   return const SizedBox();
+}
+
+buildIcon(WeatherData data) {
+  final icon = data.weather.first.icon;
+  return Image.network(
+    'https://openweathermap.org/img/wn/$icon@2x.png',
+
+  );
 }
 
 class CustomTopCurveClipper extends CustomClipper<Path> {

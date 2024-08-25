@@ -79,32 +79,35 @@ class _CurrentWeatherPageState extends State<CurrentWeatherPage> {
                             ),
                           ),
                         ),
-                      FadeIn(
-                        duration: const Duration(seconds: 2),
-                        child: GradientText(
-                          key: Keys.gradientText,
-                          text: 295.69.convertKelvinToCelsius(),
-                          textStyle: const TextStyle(fontSize: 80),
-                        ),
-                      )
+                      if (state is LoadedWeatherState)
+                        FadeIn(
+                          duration: const Duration(seconds: 2),
+                          child: GradientText(
+                            key: Keys.gradientText,
+                            text: state.weatherEntity.list.first.main.temp
+                                .convertKelvinToCelsius(),
+                            textStyle: const TextStyle(fontSize: 80),
+                          ),
+                        )
                     ],
                   ),
                 ),
               ),
-              const Align(
-                alignment: Alignment.centerRight,
-                child: RotationTransition(
-                  turns: AlwaysStoppedAnimation(270 / 360),
-                  child: Text(
-                    key: Keys.sunnyText,
-                    'Its Sunny',
-                    style: TextStyle(
-                      fontSize: 30,
-                      color: Colors.white,
+              if (state is LoadedWeatherState)
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: RotationTransition(
+                    turns: const AlwaysStoppedAnimation(270 / 360),
+                    child: Text(
+                      key: Keys.sunnyText,
+                      state.weatherEntity.list.first.weather.first.description,
+                      style: const TextStyle(
+                        fontSize: 30,
+                        color: Colors.white,
+                      ),
                     ),
                   ),
-                ),
-              )
+                )
             ],
           ),
         );
