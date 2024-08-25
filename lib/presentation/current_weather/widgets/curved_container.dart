@@ -48,12 +48,12 @@ class CurvedContainer extends StatelessWidget {
 
 Widget _buildRows(CurrentWeatherState state) {
   if (state is LoadedWeatherState) {
-    final firstFour = state.weatherEntity.list.toList().sublist(0, 4);
+    final firstFive = state.weatherEntity.list.toList().sublist(0, 5);
     return FadeIn(
       duration: const Duration(seconds: 2),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: firstFour.map((data) {
+        children: firstFive.map((data) {
           return WeatherIcon(
             time: data.dt.dtToHHMMa(),
             temp: data.main.temp.convertKelvinToCelsius(),
