@@ -1,9 +1,7 @@
 import 'package:animate_do/animate_do.dart';
-import 'package:built_collection/built_collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:razor_erp_exam/core/extensions/num_extensions.dart';
-import 'package:razor_erp_exam/data/mappers/weather_model.dart';
 import 'package:razor_erp_exam/presentation/current_weather/bloc/current_weather_bloc.dart';
 import 'package:razor_erp_exam/presentation/current_weather/widgets/weather_icon.dart';
 
