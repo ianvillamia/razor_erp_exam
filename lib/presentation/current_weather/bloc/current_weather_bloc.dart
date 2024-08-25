@@ -73,7 +73,6 @@ class CurrentWeatherBloc
   @override
   Map<String, dynamic>? toJson(CurrentWeatherState state) {
     if (state is LoadedWeatherState) {
-
       return state.weatherEntity.toJson();
     }
     return null;

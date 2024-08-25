@@ -1,3 +1,4 @@
+import 'package:equatable/equatable.dart';
 import 'package:fpdart/fpdart.dart';
 
 /// Template for creating use cases
@@ -54,11 +55,16 @@ abstract class BaseUseCase<T, Params> {
   Future<Either<ApiException, T>> call(Params params);
 }
 
-class ApiException with ExceptionErrorCode implements Exception {
+class ApiException extends Equatable
+    with ExceptionErrorCode
+    implements Exception {
   ApiException({required this.code, required this.message});
 
   final String code;
   final String message;
+
+  @override
+  List<Object?> get props => [];
 }
 
 mixin ExceptionErrorCode {
