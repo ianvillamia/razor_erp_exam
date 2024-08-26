@@ -17,7 +17,7 @@ class GradientText extends StatelessWidget {
           Colors.white,
           Colors.white.withOpacity(0.8), // Slightly less transparent white
           Colors.white.withOpacity(0.4), // Even more transparent
-          Colors.white.withOpacity(0.2), // Near transparent
+          Colors.white.withOpacity(0.3), // Near transparent
         ],
         begin: Alignment.topCenter,
         end: Alignment.bottomCenter,

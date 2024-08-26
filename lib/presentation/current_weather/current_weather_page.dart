@@ -63,7 +63,7 @@ class _CurrentWeatherPageState extends State<CurrentWeatherPage> {
               Align(
                 alignment: Alignment.topLeft,
                 child: Padding(
-                  padding: const EdgeInsets.only(left: 10, top: 60),
+                  padding: const EdgeInsets.only(left: 10, top: 70),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
