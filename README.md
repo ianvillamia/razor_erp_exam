@@ -4,7 +4,6 @@ Razor ERP Exam is a Flutter application designed to provide weather forecasts us
 
 ### Test Coverage
 
-
 #### Widget Tests
 
 ![Widget Test Coverage](docs/widget_test.png)
@@ -13,8 +12,8 @@ Razor ERP Exam is a Flutter application designed to provide weather forecasts us
 
 ![Bloc Test Coverage](docs/bloc_test.png)
 
-
 ## Getting Started
+
 ![Demo](docs/demo.gif)
 
 This application retrieves weather data from the OpenWeatherMap API by making a request to the following endpoint:
@@ -28,8 +27,16 @@ Replace `{{lat}}`, `{{long}}`, and `{{apiKey}}` with the appropriate latitude, l
 
 ### Features
 
-- Weather forecast display based on user's location.
+- Weather forecast display based on the user's location.
 
+### Checklist
+
+- [x] Integrated `dio` to call REST API with API key as an interceptor.
+- [x] Implemented `bloc` for state management.
+- [x] Used `built_value` for JSON deserialization.
+- [x] Added `hydrated_bloc` to store the last record, allowing users to view it even when offline.
+- [x] Utilized `geolocator` to get the user's current location.
+- [x] Wrote widget tests and unit tests.
 
 ### Additional Resources
 
