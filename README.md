@@ -1,16 +1,28 @@
-# razor_erp_exam
+# Razor ERP Exam
 
-A new Flutter project.
+Razor ERP Exam is a Flutter application designed to provide weather forecasts using the OpenWeatherMap API.
+
+![Demo](docs/demo.gif)
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+This application retrieves weather data from the OpenWeatherMap API by making a request to the following endpoint:
 
-A few resources to get you started if this is your first Flutter project:
+Replace `{{lat}}`, `{{long}}`, and `{{apiKey}}` with the appropriate latitude, longitude, and your API key.
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+### Prerequisites
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- Flutter SDK
+- An OpenWeatherMap API key
+
+### Features
+
+- 
+### Additional Resources
+
+For more information on Flutter development, check out the following resources:
+
+- [Flutter Codelabs](https://docs.flutter.dev/get-started/codelab)
+- [Flutter Cookbook](https://docs.flutter.dev/cookbook)
+
+For full documentation, tutorials, and API references, visit the [Flutter website](https://docs.flutter.dev/).
