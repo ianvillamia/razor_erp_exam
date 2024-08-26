@@ -17,7 +17,19 @@ Replace `{{lat}}`, `{{long}}`, and `{{apiKey}}` with the appropriate latitude, l
 
 ### Features
 
-- 
+- Weather forecast display based on user's location.
+
+### Test Coverage
+
+
+#### Widget Tests
+
+![Widget Test Coverage](docs/widget_test.png)
+
+#### Bloc Tests
+
+![Bloc Test Coverage](docs/bloc_test.png)
+
 ### Additional Resources
 
 For more information on Flutter development, check out the following resources:
