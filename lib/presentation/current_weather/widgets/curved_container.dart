@@ -72,7 +72,6 @@ buildIcon(WeatherData data) {
   final icon = data.weather.first.icon;
   return Image.network(
     'https://openweathermap.org/img/wn/$icon@2x.png',
-
   );
 }
 

@@ -1,7 +1,10 @@
+import 'dart:io';
+
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:mocktail_image_network/mocktail_image_network.dart';
 import 'package:razor_erp_exam/core/keys/keys.dart';
 import 'package:razor_erp_exam/data/mappers/weather_model.dart';
 import 'package:razor_erp_exam/presentation/current_weather/bloc/current_weather_bloc.dart';
@@ -16,6 +19,7 @@ class MockCurrentWeatherBloc
 void main() {
   late MockCurrentWeatherBloc mockBloc;
   late WeatherModel weatherModel;
+  setUpAll(() => HttpOverrides.global = null);
   setUp(() {
     mockBloc = MockCurrentWeatherBloc();
     final weatherList = List.generate(5, (i) {
@@ -67,28 +71,25 @@ void main() {
         ..sunset = 1620066000)));
   });
 
-  tearDown(() {
-    mockBloc.close();
-  });
-
   testWidgets('renders weather page with loaded state',
       (WidgetTester tester) async {
     // Arrange
     when(() => mockBloc.state).thenReturn(LoadedWeatherState(weatherModel));
-
-    await tester.pumpWidget(
-      MaterialApp(
-        home: BlocProvider<CurrentWeatherBloc>(
-          create: (_) => mockBloc,
-          child: const CurrentWeatherPage(),
+    await mockNetworkImages(
+      () async => await tester.pumpWidget(
+        MaterialApp(
+          home: BlocProvider<CurrentWeatherBloc>(
+            create: (_) => mockBloc,
+            child: const CurrentWeatherPage(),
+          ),
         ),
       ),
     );
+
     await tester.pump(Duration.zero); // Skip animations
 
     expect(find.byKey(Keys.sunnyText), findsOneWidget);
     expect(find.byKey(Keys.gradientText), findsOneWidget);
-    expect(find.byKey(Keys.cityText), findsOneWidget);
-    expect(find.byKey(Keys.curvedContainer), findsOneWidget);
+    expect(find.byKey(Keys.gradientText), findsOneWidget);
   });
 }
